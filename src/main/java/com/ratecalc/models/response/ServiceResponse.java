@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * This class is a pojo for the server error responses
  *
@@ -13,24 +18,31 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ServiceResponse {
 
+    @XmlElement
     @JsonProperty
     @ApiModelProperty(required = true)
     private Long timestamp;
 
+    @XmlElement
     @JsonProperty
     @ApiModelProperty(required = true)
     private int statusCode;
 
+    @XmlElement
     @JsonProperty
     @ApiModelProperty(required = true)
     private String statusMessage;
 
+    @XmlElement
     @JsonProperty
     @ApiModelProperty(required = true)
     private int errorCode;
 
+    @XmlElement
     @JsonProperty
     @ApiModelProperty(required = true)
     private String errorMessage;

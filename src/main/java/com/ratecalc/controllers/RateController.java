@@ -25,7 +25,7 @@ import javax.ws.rs.core.Response;
  * @Author Brian DeSimone
  * @Date 07/13/2018
  */
-@Api(value = "Rate", description = "Calculate Rate API", tags = "rate")
+@Api(value = "Rate", description = "Calculate Rate API", tags = "Rate")
 @Path("/")
 public class RateController {
 
