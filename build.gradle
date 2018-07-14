@@ -25,7 +25,7 @@ project.ext {
     jacksonXMLVersion = '2.9.6'
     javaxVersion = '2.1'
     jerseyVersion = '2.25.1'
-    log4jVersion = '2.11.0'
+    log4jVersion = '2.8.2'
     swaggerVersion = '1.5.20'
 }
 
