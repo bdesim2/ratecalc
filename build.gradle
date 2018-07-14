@@ -21,6 +21,7 @@ tasks.withType(JavaCompile) {
 
 project.ext {
     dropwizardVersion = '4.0.2'
+    httpVersion = '4.5.3'
     jacksonJSONVersion = '2.25.1'
     jacksonXMLVersion = '2.9.6'
     javaxVersion = '2.1'
@@ -35,6 +36,8 @@ dependencies {
     // Dropwizard
     compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: dropwizardVersion
     compile group: 'io.dropwizard.metrics', name: 'metrics-healthchecks', version: dropwizardVersion
+    // Apache HTTP
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: httpVersion
     // Jackson JSON/XML
     compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: jacksonJSONVersion
     compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-base', version: jacksonXMLVersion

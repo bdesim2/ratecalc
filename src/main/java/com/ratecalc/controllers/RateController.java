@@ -2,9 +2,11 @@ package com.ratecalc.controllers;
 
 import com.ratecalc.core.Common;
 import com.ratecalc.models.request.RateRequest;
+import com.ratecalc.models.response.RateResponse;
 import com.ratecalc.models.response.ServiceResponse;
 import com.ratecalc.services.RateService;
 import io.swagger.annotations.*;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -41,10 +43,10 @@ public class RateController {
     @Path(value = "/rate/{startRate}/{endRate}")
     @Produces(value = {MediaType.TEXT_PLAIN})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 400, message = "Bad Request", response = ServiceResponse.class),
-            @ApiResponse(code = 404, message = "Not Found", response = ServiceResponse.class),
-            @ApiResponse(code = 500, message = "Server Error", response = ServiceResponse.class)
+            @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RateResponse.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Bad Request", response = ServiceResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
     })
     public int getRate(
             @PathParam(value = "startRate")
@@ -63,10 +65,10 @@ public class RateController {
     @Consumes(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 400, message = "Bad Request", response = ServiceResponse.class),
-            @ApiResponse(code = 404, message = "Not Found", response = ServiceResponse.class),
-            @ApiResponse(code = 500, message = "Server Error", response = ServiceResponse.class)
+            @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RateResponse.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Bad Request", response = ServiceResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
     })
     public int postRate(
             @ApiParam(name = "body", value = "The rate range to request", required = true)
