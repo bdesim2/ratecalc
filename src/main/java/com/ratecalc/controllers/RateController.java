@@ -1,5 +1,6 @@
 package com.ratecalc.controllers;
 
+import com.ratecalc.constants.Status;
 import com.ratecalc.core.Common;
 import com.ratecalc.models.request.RateRequest;
 import com.ratecalc.models.response.RateResponse;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * This class is the rate controller for all /rate endpoints
@@ -41,14 +43,14 @@ public class RateController {
     @ApiOperation(value = "Get Rate", nickname = "get rate")
     @GET
     @Path(value = "/rate/{startRate}/{endRate}")
-    @Produces(value = {MediaType.TEXT_PLAIN})
+    @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RateResponse.class),
             @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Bad Request", response = ServiceResponse.class),
             @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
     })
-    public int getRate(
+    public Response getRate(
             @PathParam(value = "startRate")
             final String startRate,
             @PathParam(value = "endRate")
@@ -56,7 +58,16 @@ public class RateController {
     ){
         LOGGER.info("Request received for GET /rate/{startRate}/{endRate}");
         LOGGER.info("Calculating rate based on range: " + startRate + " - " + endRate);
-        return 0;
+        // Calculate the rate (the real work)
+        int rate = 100;
+        return Response
+                .status(Response.Status.OK)
+                .entity(new RateResponse(
+                        Status.SUCCESS.getStatusCode(),
+                        Status.SUCCESS.getStatusMessage(),
+                        rate
+                ))
+                .build();
     }
 
     @ApiOperation(value = "Post Rate", nickname = "post rate")
@@ -70,7 +81,7 @@ public class RateController {
             @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
     })
-    public int postRate(
+    public Response postRate(
             @ApiParam(name = "body", value = "The rate range to request", required = true)
             @Valid
             RateRequest rateRequest
@@ -78,7 +89,16 @@ public class RateController {
         LOGGER.info("Request received for POST /rate");
         LOGGER.info("Reading in the request body to find a parking rate.");
         common.logObject(rateRequest);
-        return 0;
+        // Calculate the rate (the real work)
+        int rate = 100;
+        return Response
+                .status(Response.Status.OK)
+                .entity(new RateResponse(
+                        Status.SUCCESS.getStatusCode(),
+                        Status.SUCCESS.getStatusMessage(),
+                        rate
+                ))
+                .build();
     }
 
 }
