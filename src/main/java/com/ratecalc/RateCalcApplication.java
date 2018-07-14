@@ -2,6 +2,9 @@ package com.ratecalc;
 
 import com.ratecalc.controllers.IsAliveController;
 import com.ratecalc.controllers.RateController;
+import io.swagger.annotations.Contact;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.jaxrs.config.BeanConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +24,18 @@ import java.util.Set;
  * @Date 07/13/2018
  */
 @ApplicationPath("/")
+@SwaggerDefinition(
+        info = @Info(
+                title = "Rate Calculator",
+                version = "1.0.0",
+                description = "The rate calculator micro-service will calculate a rate based on the day of the week," +
+                    " start time, and end time desired.",
+                contact = @Contact(
+                        name = "Brian DeSimone",
+                        email = "bdesim2@gmail.com"
+                )
+        )
+)
 public class RateCalcApplication extends Application {
 
     private final static Logger LOGGER = LogManager.getLogger(RateCalcApplication.class);
@@ -38,7 +53,7 @@ public class RateCalcApplication extends Application {
     public void startBeans(){
         LOGGER.info("Beginning setup of the application... Initializing Swagger Documentation.");
         BeanConfig beanConfig = new BeanConfig();
-        beanConfig.setVersion("1.0.2");
+        beanConfig.setVersion("1.0.0");
         beanConfig.setSchemes(new String[]{"http"});
         beanConfig.setHost("localhost:8080");
         beanConfig.setBasePath("/api");
