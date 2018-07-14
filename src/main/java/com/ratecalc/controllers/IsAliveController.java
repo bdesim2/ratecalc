@@ -35,7 +35,11 @@ public class IsAliveController {
             @ApiResponse(code = 200, message = "Success", response = HealthCheck.class),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    public HealthCheck isAlive(@PathParam(value = "name") final String name){
+    public HealthCheck isAlive(
+            @QueryParam(value = "name")
+            @DefaultValue(value = "World")
+            final String name
+    ){
         LOGGER.info("Request received for API: /isAlive. Name: " + name);
         final HealthCheck healthCheck = isAliveService.getHealthCheck(name);
         LOGGER.info("Response for healthcheck: " + healthCheck.toString());

@@ -26,6 +26,7 @@ project.ext {
     javaxVersion = '2.1'
     jerseyVersion = '2.25.1'
     log4jVersion = '2.8.2'
+    slf4jVersion = '1.7.25'
     swaggerVersion = '1.5.20'
 }
 
@@ -40,9 +41,10 @@ dependencies {
     compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-json-provider', version: jacksonXMLVersion
     // JAVAX
     compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: javaxVersion
-    // Log4J
+    // Logging
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
     // Swagger
     compile group: 'io.swagger', name: 'swagger-jersey2-jaxrs', version: swaggerVersion
 
