@@ -20,19 +20,20 @@ tasks.withType(JavaCompile) {
 }
 
 project.ext {
+    dropwizardVersion = '4.0.2'
+    jacksonJSONVersion = '2.27'
+    jacksonXMLVersion = '2.9.6'
     javaxVersion = '2.1'
+    jerseyVersion = '2.27'
     log4jVersion = '2.11'
     swaggerVersion = '1.5.20'
-    jacksonXMLVersion = '2.9.6'
-    jacksonJSONVersion = '2.27'
-    jerseyVersion = '2.27'
 }
 
 dependencies {
     // MAIN
     // Dropwizard
-    compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '4.0.2'
-    compile group: 'io.dropwizard.metrics', name: 'metrics-healthchecks', version: '4.0.2'
+    compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: dropwizardVersion
+    compile group: 'io.dropwizard.metrics', name: 'metrics-healthchecks', version: dropwizardVersion
     // Jackson JSON/XML
     compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: jacksonJSONVersion
     compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-base', version: jacksonXMLVersion
