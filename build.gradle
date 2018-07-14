@@ -1,0 +1,52 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
+
+repositories {
+    mavenCentral()
+}
+
+gretty {
+    contextPath = "/"
+}
+
+war {
+    archiveName = "ROOT.war"
+    destinationDir = new File("${rootDir}/target/")
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+project.ext {
+    javaxVersion = '2.1'
+    log4jVersion = '2.11'
+    swaggerVersion = '1.5.20'
+    jacksonXMLVersion = '2.9.6'
+    jacksonJSONVersion = '2.27'
+    jerseyVersion = '2.27'
+}
+
+dependencies {
+    // MAIN
+    // Dropwizard
+    compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '4.0.2'
+    compile group: 'io.dropwizard.metrics', name: 'metrics-healthchecks', version: '4.0.2'
+    // Jackson JSON/XML
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: jacksonJSONVersion
+    compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-base', version: jacksonXMLVersion
+    compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-json-provider', version: jacksonXMLVersion
+    // JAVAX
+    compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: javaxVersion
+    // Log4J2
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    // Swagger
+    compile group: 'io.swagger', name: 'swagger-jersey2-jaxrs', version: swaggerVersion
+
+    // TEST
+    // Jersey
+    testCompile group: 'org.glassfish.jersey.test-framework.providers', name: 'jersey-test-framework-provider-grizzly2', version: jerseyVersion
+    testCompile group: 'org.glassfish.jersey.bundles.repackaged', name: 'jersey-guava', version: jerseyVersion
+}
