@@ -70,6 +70,11 @@ public class RateController {
                 .build();
     }
 
+    /**
+     * This method will calculate and return a given rate based on a start and end ISO date/time
+     * @param rateRequest JSON or XML of startRate and endRate in ISO date/time
+     * @return RateResponse object including the rate
+     */
     @ApiOperation(value = "Post Rate", nickname = "post rate")
     @POST
     @Path(value = "/rate")
