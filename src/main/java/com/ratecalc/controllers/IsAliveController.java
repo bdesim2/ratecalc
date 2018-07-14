@@ -12,6 +12,7 @@ import org.slf4j.MDC;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * This class provides a simple health check API that will verify the server is functioning
@@ -25,8 +26,15 @@ public class IsAliveController {
 
     // GLOBAL CLASS VARIABLES
     private static final Logger LOGGER = LogManager.getLogger(IsAliveController.class);
+    private static final String TEMPLATE = "Hello, %s!: Rate Calculator is Alive!! WELCOME!!";
     private final transient IsAliveService isAliveService = new IsAliveService();
+    private final transient AtomicLong counter = new AtomicLong();
 
+    /**
+     * API to get health check of the rate calculator application
+     * @param name the name to say hello to... defaults to 'World'
+     * @return the HealthCheck Object
+     */
     @ApiOperation(value = "healthcheck", nickname = "healthcheck")
     @GET
     @Path(value = "/isAlive")
@@ -41,7 +49,7 @@ public class IsAliveController {
             final String name
     ){
         LOGGER.info("Request received for API: /isAlive. Name: " + name);
-        final HealthCheck healthCheck = isAliveService.getHealthCheck(name);
+        final HealthCheck healthCheck = isAliveService.getHealthCheck(name, counter);
         LOGGER.info("Response for healthcheck: " + healthCheck.toString());
         MDC.put("requestId", String.valueOf(java.util.UUID.randomUUID()));
         return healthCheck;

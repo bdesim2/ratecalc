@@ -15,11 +15,15 @@ import java.util.concurrent.atomic.AtomicLong;
 public class IsAliveService {
 
     // GLOBAL CLASS VARIABLES
-    private static final Logger LOGGER = LogManager.getLogger(IsAliveService.class);
     private static final String TEMPLATE = "Hello, %s!: Rate Calculator is Alive!! WELCOME!!";
-    private final transient AtomicLong counter = new AtomicLong();
 
-    public HealthCheck getHealthCheck(String name){
+    /**
+     * create a new healthcheck response
+     * @param name name to say hello to
+     * @param counter atomic counter that increments with each GET
+     * @return the healcheck response
+     */
+    public HealthCheck getHealthCheck(final String name, final AtomicLong counter){
         final HealthCheck healthCheck = new HealthCheck();
         healthCheck.setId(counter.incrementAndGet());
         healthCheck.setContent(String.format(TEMPLATE, name));
