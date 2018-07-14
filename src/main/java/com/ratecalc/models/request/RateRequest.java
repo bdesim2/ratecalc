@@ -24,15 +24,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RateRequest {
 
-    @XmlElement(name = "startRate")
-    @JsonProperty(value = "startRate")
-    @ApiModelProperty(required = true)
+    @XmlElement
+    @JsonProperty
+    @ApiModelProperty(required = true, value = "startRate must be an ISO DateTime")
     @NotNull(message = "startRate cannot be null. This is a required field.")
     private String startRate;
 
-    @XmlElement(name = "endRate")
-    @JsonProperty(value = "endRate")
-    @ApiModelProperty(required = true)
+    @XmlElement
+    @JsonProperty
+    @ApiModelProperty(required = true, value = "endRate must be an ISO DateTime")
     @NotNull(message = "endRate cannot be null. This is a required field.")
     private String endRate;
 
