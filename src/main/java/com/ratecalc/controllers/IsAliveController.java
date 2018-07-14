@@ -1,6 +1,7 @@
 package com.ratecalc.controllers;
 
 import com.ratecalc.models.HealthCheck;
+import com.ratecalc.models.response.ServiceResponse;
 import com.ratecalc.services.IsAliveService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +41,7 @@ public class IsAliveController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = HealthCheck.class),
-            @ApiResponse(code = 500, message = "Server Error")
+            @ApiResponse(code = 500, message = "Server Error", response = ServiceResponse.class)
     })
     public HealthCheck isAlive(
             @QueryParam(value = "name")
