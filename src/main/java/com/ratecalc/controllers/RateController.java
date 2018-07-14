@@ -52,6 +52,7 @@ public class RateController {
             @PathParam(value = "endRate")
             final String endRate
     ){
+        LOGGER.info("Request received for GET /rate/{startRate}/{endRate}");
         LOGGER.info("Calculating rate based on range: " + startRate + " - " + endRate);
         return 0;
     }
@@ -72,6 +73,7 @@ public class RateController {
             @Valid
             RateRequest rateRequest
     ){
+        LOGGER.info("Request received for POST /rate");
         LOGGER.info("Reading in the request body to find a parking rate.");
         common.logObject(rateRequest);
         return 0;
