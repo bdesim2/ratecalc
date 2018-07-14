@@ -1,9 +1,10 @@
 package com.ratecalc;
 
+import com.ratecalc.controllers.IsAliveController;
 import com.ratecalc.controllers.RateController;
 import io.swagger.jaxrs.config.BeanConfig;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -50,6 +51,7 @@ public class RateCalcApplication extends Application {
         final Set<Class<?>> classes = new HashSet<>();
         // add our endpoints
         classes.add(RateController.class);
+        classes.add(IsAliveController.class);
         // enable swagger
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);

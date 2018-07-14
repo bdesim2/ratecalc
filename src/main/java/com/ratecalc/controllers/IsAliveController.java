@@ -6,9 +6,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.MDC;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.slf4j.MDC;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -21,10 +21,10 @@ import javax.ws.rs.core.MediaType;
  */
 @Api(value = "Healthcheck", description = "Healthcheck API", tags = "Healthcheck")
 @Path(value = "/")
-public class isAliveController {
+public class IsAliveController {
 
     // GLOBAL CLASS VARIABLES
-    private static final Logger LOGGER = LogManager.getLogger(isAliveController.class);
+    private static final Logger LOGGER = LogManager.getLogger(IsAliveController.class);
     private final transient IsAliveService isAliveService = new IsAliveService();
 
     @ApiOperation(value = "healthcheck", nickname = "healthcheck")
