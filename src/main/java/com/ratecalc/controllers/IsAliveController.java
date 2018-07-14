@@ -26,7 +26,6 @@ public class IsAliveController {
 
     // GLOBAL CLASS VARIABLES
     private static final Logger LOGGER = LogManager.getLogger(IsAliveController.class);
-    private static final String TEMPLATE = "Hello, %s!: Rate Calculator is Alive!! WELCOME!!";
     private final transient IsAliveService isAliveService = new IsAliveService();
     private final transient AtomicLong counter = new AtomicLong();
 
