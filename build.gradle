@@ -21,7 +21,7 @@ tasks.withType(JavaCompile) {
 
 project.ext {
     dropwizardVersion = '4.0.2'
-    jacksonJSONVersion = '2.27'
+    jacksonJSONVersion = '2.25.1'
     jacksonXMLVersion = '2.9.6'
     javaxVersion = '2.1'
     jerseyVersion = '2.27'
