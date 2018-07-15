@@ -8,21 +8,27 @@ package com.ratecalc.constants;
  */
 public enum Day {
 
-    MONDAY("mon"),
-    TUESDAY("tues"),
-    WEDNESDAY("wed"),
-    THURSDAY("thurs"),
-    FRIDAY("fri"),
-    SATURDAY("sat"),
-    SUNDAY("sun");
+    MONDAY("mon", "MONDAY"),
+    TUESDAY("tues", "TUESDAY"),
+    WEDNESDAY("wed", "WEDNESDAY"),
+    THURSDAY("thurs", "THURSDAY"),
+    FRIDAY("fri", "FRIDAY"),
+    SATURDAY("sat", "SATURDAY"),
+    SUNDAY("sun", "SUNDAY");
 
     /**
      * Variable that holds the day abbreviation
      */
     private String day;
 
-    Day(final String day){
+    /**
+     * Variable that holds the full day
+     */
+    private String fullDay;
+
+    Day(final String day, final String fullDay){
         this.day = day;
+        this.fullDay = fullDay;
     }
 
     /**
@@ -31,6 +37,14 @@ public enum Day {
      */
     String getDay(){
         return this.day;
+    }
+
+    /**
+     * Getter for the full day
+     * @return full day name
+     */
+    String getFullDay(){
+        return this.fullDay;
     }
 
 }
