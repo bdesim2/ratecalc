@@ -1,5 +1,6 @@
 package com.ratecalc.controllers;
 
+import com.ratecalc.config.RateConfig;
 import com.ratecalc.constants.Status;
 import com.ratecalc.core.Common;
 import com.ratecalc.models.request.RateRequest;
@@ -33,6 +34,7 @@ public class RateController {
     private static final Logger LOGGER = LogManager.getLogger(RateController.class);
     private static final Common common = new Common();
     private final transient RateService rateService = new RateService();
+    private RateConfig rateConfig = RateConfig.getInstance();
 
     /**
      * This method will calculate and return a given rate based on a start and end ISO date/time
@@ -60,6 +62,7 @@ public class RateController {
         LOGGER.info("Calculating rate based on range: " + startRate + " - " + endRate);
         // Calculate the rate (the real work)
         int rate = 100;
+        rateConfig.test();
         return Response
                 .status(Response.Status.OK)
                 .entity(new RateResponse(
