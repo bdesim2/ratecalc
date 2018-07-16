@@ -24,6 +24,10 @@ public class TestRateController extends JerseyTest {
         return new ResourceConfig(RateController.class);
     }
 
+    // ================================================================================================================
+    // GET ALL RATES TESTS
+    // ================================================================================================================
+
     @Test
     public void getAllRatesSuccess(){
         Response response = target("/rates").request().get();
@@ -38,5 +42,14 @@ public class TestRateController extends JerseyTest {
         Assert.assertEquals(Status.SUCCESS.getStatusMessage(), response.getStatusMessage());
         Assert.assertTrue(response.getRates().size() > 0);
     }
+
+    // ================================================================================================================
+    // GET RATE TESTS
+    // ================================================================================================================
+
+
+    // ================================================================================================================
+    // POST RATE TESTS
+    // ================================================================================================================
 
 }
