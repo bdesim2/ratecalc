@@ -21,11 +21,13 @@ tasks.withType(JavaCompile) {
 
 project.ext {
     dropwizardVersion = '4.0.2'
+    httpVersion = '4.5.3'
     jacksonJSONVersion = '2.25.1'
     jacksonXMLVersion = '2.9.6'
     javaxVersion = '2.1'
     jerseyVersion = '2.25.1'
     log4jVersion = '2.8.2'
+    slf4jVersion = '1.7.25'
     swaggerVersion = '1.5.20'
 }
 
@@ -34,15 +36,18 @@ dependencies {
     // Dropwizard
     compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: dropwizardVersion
     compile group: 'io.dropwizard.metrics', name: 'metrics-healthchecks', version: dropwizardVersion
+    // Apache HTTP
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: httpVersion
     // Jackson JSON/XML
     compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: jacksonJSONVersion
     compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-base', version: jacksonXMLVersion
     compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-json-provider', version: jacksonXMLVersion
     // JAVAX
     compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: javaxVersion
-    // Log4J2
+    // Logging
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
     // Swagger
     compile group: 'io.swagger', name: 'swagger-jersey2-jaxrs', version: swaggerVersion
 
