@@ -36,7 +36,7 @@ public class IsAliveController {
      * @param name the name to say hello to... defaults to 'World'
      * @return the HealthCheck Object
      */
-    @ApiOperation(value = "healthcheck", nickname = "healthcheck")
+    @ApiOperation(value = "HealthCheck", nickname = "healthcheck")
     @GET
     @Path(value = "/isAlive")
     @Produces(value = {MediaType.APPLICATION_JSON})

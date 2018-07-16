@@ -35,6 +35,10 @@ public class RatesResponse {
     @ApiModelProperty(required = true)
     private Map<String, List<ParkingRate>> rates = null;
 
+    public RatesResponse(){
+
+    }
+
     public RatesResponse(int statusCode, String statusMessage, Map<String, List<ParkingRate>> rates){
         this.timestamp = System.currentTimeMillis();
         this.statusCode = statusCode;

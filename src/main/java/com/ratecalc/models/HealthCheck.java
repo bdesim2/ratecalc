@@ -11,6 +11,10 @@ public class HealthCheck {
     @JsonProperty("content")
     private String content;
 
+    public HealthCheck(){
+
+    }
+
     public long getId() {
         return id;
     }
