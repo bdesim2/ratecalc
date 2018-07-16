@@ -69,6 +69,8 @@ public class RateConfig {
         common.logObject(rates);
         LOGGER.info("Transforming the parking rates from the config to a map of {<Day>, [<ParkingRates>]}");
         convertRate(rates);
+        LOGGER.info("Transformed parking rates:");
+        common.logObject(this.parkingRates);
     }
 
     /**

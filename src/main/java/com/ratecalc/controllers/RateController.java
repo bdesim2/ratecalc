@@ -5,6 +5,7 @@ import com.ratecalc.constants.Status;
 import com.ratecalc.core.Common;
 import com.ratecalc.models.request.RateRequest;
 import com.ratecalc.models.response.RateResponse;
+import com.ratecalc.models.response.RatesResponse;
 import com.ratecalc.models.response.ServiceResponse;
 import com.ratecalc.services.RateService;
 import io.swagger.annotations.*;
@@ -108,4 +109,24 @@ public class RateController {
                 .build();
     }
 
+    @ApiOperation(value = "Get All Available Rates", nickname = "get all rates")
+    @GET
+    @Path(value = "/rates")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RateResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
+    })
+    public Response getAllRates(){
+        LOGGER.info("Request received for GET /rates");
+        return Response
+                .status(Response.Status.OK)
+                .entity(new RatesResponse(
+                        Status.SUCCESS.getStatusCode(),
+                        Status.SUCCESS.getStatusMessage(),
+                        rateConfig.getParkingRates()
+                ))
+                .build();
+    }
 }
