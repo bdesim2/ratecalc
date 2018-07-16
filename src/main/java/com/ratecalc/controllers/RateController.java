@@ -117,7 +117,7 @@ public class RateController {
             @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
     })
-    public Response getAllRates(){
+    public Response getAllRates() throws Exception {
         LOGGER.info("Request received for GET /rates");
         return Response
                 .status(Response.Status.OK)
