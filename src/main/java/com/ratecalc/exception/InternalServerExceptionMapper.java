@@ -1,4 +1,4 @@
-package com.ratecalc.controllers;
+package com.ratecalc.exception;
 
 import com.ratecalc.constants.Error;
 import com.ratecalc.constants.Status;
@@ -17,10 +17,10 @@ import javax.ws.rs.ext.Provider;
  * @Date 07/16/2018
  */
 @Provider
-public class ExceptionHandler implements ExceptionMapper<Exception> {
+public class InternalServerExceptionMapper implements ExceptionMapper<Exception> {
 
     // GLOBAL CLASS VARIABLES
-    private static final Logger LOGGER = LogManager.getLogger(ExceptionHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(InternalServerExceptionMapper.class);
 
     @Override
     public Response toResponse(Exception ex){
