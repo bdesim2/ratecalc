@@ -3,6 +3,7 @@ package com.ratecalc.exception;
 import com.ratecalc.constants.Error;
 import com.ratecalc.constants.Status;
 import com.ratecalc.models.exceptions.ServerException;
+import com.ratecalc.models.exceptions.ServerErrorResponse;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -40,7 +41,10 @@ public class InternalServerExceptionMapper implements ExceptionMapper<Exception>
         }
         LOGGER.info("Handling Bad Request from missing or required attribute.");
         LOGGER.info(ex.getMessage());
-        return Response.status(serverException.getStatusCode()).entity(serverException).build();
+        return Response
+                .status(serverException.getStatusCode())
+                .entity(new ServerErrorResponse(serverException))
+                .build();
     }
 
 }
