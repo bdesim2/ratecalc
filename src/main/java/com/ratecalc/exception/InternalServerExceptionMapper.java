@@ -7,6 +7,7 @@ import com.ratecalc.models.exceptions.ServerErrorResponse;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -28,7 +29,7 @@ public class InternalServerExceptionMapper implements ExceptionMapper<Exception>
         ServerException serverException;
         // Make sure we handle all instances of Application exception.. not just our base exception
         if (ex instanceof ServerException){
-            serverException = (ServerException) ex;
+            serverException = (ServerException)ex;
         }
         // return the generic default internal server error if we get this far
         else {
@@ -39,11 +40,11 @@ public class InternalServerExceptionMapper implements ExceptionMapper<Exception>
                     Error.INTERNAL_SERVER_ERROR.getErrorMessage()
             );
         }
-        LOGGER.info("Handling Bad Request from missing or required attribute.");
         LOGGER.info(ex.getMessage());
         return Response
                 .status(serverException.getStatusCode())
                 .entity(new ServerErrorResponse(serverException))
+                .type(MediaType.APPLICATION_JSON)
                 .build();
     }
 
