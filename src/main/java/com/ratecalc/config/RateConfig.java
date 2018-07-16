@@ -1,7 +1,10 @@
 package com.ratecalc.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ratecalc.constants.Day;
 import com.ratecalc.core.Common;
+import com.ratecalc.models.rate.ParkingRate;
+import com.ratecalc.models.rate.Rate;
 import com.ratecalc.models.rate.Rates;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -9,6 +12,10 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class will read in the config for our rate converter. This config is based on the rates json file provided for
@@ -26,8 +33,10 @@ public class RateConfig {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static Common common = new Common();
     private static RateConfig ourInstance;
-//    private static final String PARKING_RATES = "/src/main/resources/parking_rates.json";
     private static final String PARKING_RATES = "/parking_rates.json";
+
+    // VARIABLE TO HOLD THE TRANSFORMED DATA
+    private transient Map<String, List<ParkingRate>> parkingRates = new HashMap<>();
 
     /**
      * Generic constructor that will read in config files from path.. for our application read in parking rates json
@@ -58,6 +67,8 @@ public class RateConfig {
         final Rates rates = readJSONFile(filePath, Rates.class);
         LOGGER.info("We have successfully read the JSON config file. Parking Rates from config:");
         common.logObject(rates);
+        LOGGER.info("Transforming the parking rates from the config to a map of {<Day>, [<ParkingRates>]}");
+        convertRate(rates);
     }
 
     /**
@@ -82,8 +93,45 @@ public class RateConfig {
         return c.newInstance();
     }
 
-    public void test(){
-        LOGGER.info("TESTING");
+    /**
+     * Method to convert the json parking rates file to a pojo that holds days and each parking rate per given time
+     * @param rates Rates object from config json file
+     * @return Map of days and parking rates
+     */
+    private void convertRate(Rates rates){
+        // go through each rate and add the rate to the appropriate day in the map
+        for (Rate rate:rates.getRates()){
+            parseParkingRate(rate);
+        }
     }
 
+    /**
+     * MAIN PARSER! This method will do the dirty work and parse out the config file and actually populate our ParkingRates object
+     * @param rate each rate to populate from the config
+     */
+    private void parseParkingRate(Rate rate){
+        // First we need to get our days from each rate in the config file and store as an array we can use later
+        String[] days = rate.getDays().split(",");
+        // for each day make sure we grab the rate, make a list, and populate the parkingRates map by day
+        for (String day:days){
+            // split out the start and end time
+            String[] times = rate.getTimes().split("-");
+            ParkingRate parkingRate = new ParkingRate(
+                    rate.getPrice(),
+                    times[0],
+                    times[1]
+            );
+            // Make a list of parking rates by day from the parking rates found so far... If no rates exist default to empty list
+            List<ParkingRate> rateList = this.parkingRates.getOrDefault(day, new ArrayList<>());
+            rateList.add(parkingRate);
+            // Lastly put the rate list in the parking rates pojo by day
+            parkingRates.put(day, rateList);
+        }
+
+    }
+
+    // GETTER
+    public Map<String, List<ParkingRate>> getParkingRates() {
+        return parkingRates;
+    }
 }

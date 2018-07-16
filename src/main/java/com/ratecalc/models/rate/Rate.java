@@ -14,10 +14,8 @@ public class Rate {
 
     @JsonProperty
     private String days;
-
     @JsonProperty
     private String times;
-
     @JsonProperty
     private int price;
 

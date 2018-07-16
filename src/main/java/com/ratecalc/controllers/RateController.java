@@ -62,7 +62,6 @@ public class RateController {
         LOGGER.info("Calculating rate based on range: " + startRate + " - " + endRate);
         // Calculate the rate (the real work)
         int rate = 100;
-        rateConfig.test();
         return Response
                 .status(Response.Status.OK)
                 .entity(new RateResponse(
