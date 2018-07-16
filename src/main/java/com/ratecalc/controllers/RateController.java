@@ -114,7 +114,6 @@ public class RateController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RatesResponse.class),
-            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
     })
     public Response getAllRates() throws Exception {
