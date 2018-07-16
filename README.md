@@ -17,12 +17,18 @@ This application is a REST API that will calculate parking rates given a specifi
 The rate calculator uses swagger to document it's apis. It can be found at the `<base_url>` for the servers running location.
 
 ## Endpoints: ##
-
+- GET /rates
+- GET /rate/{startRate}/{endRate}
+- POST /rate
 
 ## Metrics: ##
 
 
 ## How to Build: ##
+#### Local Build ####
+This application is using gradle and jetty. You can build this locally bu running the following command:
+```bash
 
+```
 
 ## AWS Deployment: ##
