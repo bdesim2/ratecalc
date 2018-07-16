@@ -14,10 +14,6 @@ public class ServerException extends Exception {
     private int errorCode;
     private String errorMessage;
 
-    public ServerException(){
-
-    }
-
     public ServerException(int statusCode, String statusMessage, int errorCode, String errorMessage) {
         this.timestamp = System.currentTimeMillis();
         this.statusCode = statusCode;

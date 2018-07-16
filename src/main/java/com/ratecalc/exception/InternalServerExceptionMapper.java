@@ -40,7 +40,7 @@ public class InternalServerExceptionMapper implements ExceptionMapper<Exception>
                     Error.INTERNAL_SERVER_ERROR.getErrorMessage()
             );
         }
-        LOGGER.info(ex.getMessage());
+        LOGGER.info(serverException.getErrorMessage());
         return Response
                 .status(serverException.getStatusCode())
                 .entity(new ServerErrorResponse(serverException))

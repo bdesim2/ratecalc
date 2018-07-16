@@ -31,8 +31,9 @@ public class RateService {
      */
     public int calculateRate(String startTime, String endTime) throws ServerException {
         // check start and end time are in ISO format
-        checkFormat(startTime);
-        checkFormat(endTime);
+//        checkFormat(startTime);
+//        checkFormat(endTime);
+        //
 
 
 
