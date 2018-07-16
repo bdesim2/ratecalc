@@ -35,7 +35,6 @@ public class RateController {
     private static final Logger LOGGER = LogManager.getLogger(RateController.class);
     private static final Common common = new Common();
     private final transient RateService rateService = new RateService();
-    private RateConfig rateConfig = RateConfig.getInstance();
 
     /**
      * This method will calculate and return a given rate based on a start and end ISO date/time
@@ -62,7 +61,7 @@ public class RateController {
         LOGGER.info("Request received for GET /rate/{startRate}/{endRate}");
         LOGGER.info("Calculating rate based on range: " + startRate + " - " + endRate);
         // Calculate the rate (the real work)
-        int rate = 100;
+        int rate = rateService.calculateRate(startRate, endRate);
         return Response
                 .status(Response.Status.OK)
                 .entity(new RateResponse(
@@ -98,7 +97,7 @@ public class RateController {
         LOGGER.info("Reading in the request body to find a parking rate.");
         common.logObject(rateRequest);
         // Calculate the rate (the real work)
-        int rate = 100;
+        int rate = rateService.calculateRate(rateRequest.getStartRate(), rateRequest.getEndRate());
         return Response
                 .status(Response.Status.OK)
                 .entity(new RateResponse(
@@ -114,7 +113,7 @@ public class RateController {
     @Path(value = "/rates")
     @Produces(value = {MediaType.APPLICATION_JSON})
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RateResponse.class),
+            @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RatesResponse.class),
             @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
     })
