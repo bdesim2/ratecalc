@@ -1,5 +1,7 @@
 package com.ratecalc.models.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -11,7 +13,8 @@ import javax.xml.bind.annotation.XmlElement;
  * @Author Brian DeSimone
  * @Date 07/16/2018
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServerException extends Exception {
 
     @XmlElement
