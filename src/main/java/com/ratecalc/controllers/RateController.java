@@ -125,7 +125,7 @@ public class RateController {
                 .entity(new RatesResponse(
                         Status.SUCCESS.getStatusCode(),
                         Status.SUCCESS.getStatusMessage(),
-                        rateConfig.getParkingRates()
+                        RateConfig.getInstance().getParkingRates()
                 ))
                 .build();
     }
