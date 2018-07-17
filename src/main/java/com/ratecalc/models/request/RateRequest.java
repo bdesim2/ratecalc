@@ -39,6 +39,11 @@ public class RateRequest {
 
     }
 
+    public RateRequest(String startRate, String endRate){
+        this.startRate = startRate;
+        this.endRate = endRate;
+    }
+
     public String getStartRate() {
         return startRate;
     }

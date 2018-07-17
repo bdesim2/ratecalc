@@ -43,6 +43,10 @@ public class RateResponse {
     @ApiModelProperty(required = true)
     private int rate;
 
+    public RateResponse(){
+
+    }
+
     public RateResponse(int statusCode, String statusMessage, int rate){
         this.timestamp = System.currentTimeMillis();
         this.statusCode = statusCode;
