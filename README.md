@@ -7,14 +7,14 @@ This application is a REST API that will calculate parking rates given a specifi
 - Java
 - Jersey
 - Jackson XML and JSON
-- Drop Wizard Metrics
+- Drop Wizard Metrics (Time permitting)
 - Jetty
 - Gradle
-- Docker
+- Docker (Deployment to AWS time permitting)
 - Swagger Documentation
 
 ## API Documentation: ##
-The rate calculator uses swagger to document it's apis. It can be found at the `<base_url>` for the servers running location.
+The rate calculator uses swagger to document it's apis. It can be found at the `<base_url>` for the servers running location. If you are running locally with gretty this browse to this location [URL](http://localhost:8080).
 
 ## Endpoints: ##
 - GET /rates
@@ -25,7 +25,7 @@ The rate calculator uses swagger to document it's apis. It can be found at the `
 #### Unit Tests ####
 There are unit tests located inside this project. This is a slimmer set of tests than full integration from below. Unit tests can be run with the following command:
 ```bash
-gradle clean test
+gradle test
 ```
 
 #### Integration Tests ####
