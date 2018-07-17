@@ -1,7 +1,9 @@
 package com.ratecalc.controllers;
 
+import com.ratecalc.constants.Error;
 import com.ratecalc.constants.Status;
-import com.ratecalc.models.exceptions.*;
+import com.ratecalc.exception.InternalServerExceptionMapper;
+import com.ratecalc.models.exceptions.ServerErrorResponse;
 import com.ratecalc.models.request.RateRequest;
 import com.ratecalc.models.response.RateResponse;
 import com.ratecalc.models.response.RatesResponse;
@@ -11,6 +13,8 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
@@ -26,7 +30,7 @@ public class TestRateController extends JerseyTest {
 
     @Override
     protected Application configure(){
-        return new ResourceConfig(RateController.class);
+        return new ResourceConfig(RateController.class, InternalServerExceptionMapper.class);
     }
 
     // ================================================================================================================
@@ -130,22 +134,34 @@ public class TestRateController extends JerseyTest {
         Assert.assertEquals(2000, response.getRate());
     }
 
-    @Test(expected = RateNotFoundException.class)
-    public void getUnavailableRate(){
-        target("/rate/2019-07-15T01:00:00Z/2019-07-15T23:00:00Z").request().get();
-        // auto assert, expected exception thrown
+    @Test(expected = NotFoundException.class)
+    public void getUnavailableRate() {
+        ServerErrorResponse response = target("/rate/2019-07-15T01:00:00Z/2019-07-15T23:00:00Z").request().get(ServerErrorResponse.class);
+        Assert.assertNotNull(response.getTimestamp());
+        Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatusCode());
+        Assert.assertEquals(Status.NOT_FOUND.getStatusMessage(), response.getStatusMessage());
+        Assert.assertEquals(Error.NO_RATE_FOUND.getErrorCode(), response.getErrorCode());
+        Assert.assertEquals(Error.NO_RATE_FOUND.getErrorMessage(), response.getErrorMessage());
     }
 
-    @Test(expected = InvalidRateRangeException.class)
+    @Test(expected = BadRequestException.class)
     public void testInvalidISOTime(){
-        target("/rate/2019-07/2019-07").request().get();
-        // auto assert, expected exception thrown
+        ServerErrorResponse response = target("/rate/2019-07/2019-07").request().get(ServerErrorResponse.class);
+        Assert.assertNotNull(response.getTimestamp());
+        Assert.assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatusCode());
+        Assert.assertEquals(Status.BAD_REQUEST.getStatusMessage(), response.getStatusMessage());
+        Assert.assertEquals(Error.INVALID_RATE_TIME.getErrorCode(), response.getErrorCode());
+        Assert.assertEquals(Error.INVALID_RATE_TIME.getErrorMessage(), response.getErrorMessage());
     }
 
-    @Test(expected = InvalidTimeOrderException.class)
+    @Test(expected = BadRequestException.class)
     public void testInvalidEndTimeBeforeStartTime(){
-        target("/rate/2019-07-20T01:00:00Z/2019-07-15T23:00:00Z").request().get();
-        // auto assert, expected exception thrown
+        ServerErrorResponse response = target("/rate/2019-07-20T01:00:00Z/2019-07-15T23:00:00Z").request().get(ServerErrorResponse.class);
+        Assert.assertNotNull(response.getTimestamp());
+        Assert.assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatusCode());
+        Assert.assertEquals(Status.BAD_REQUEST.getStatusMessage(), response.getStatusMessage());
+        Assert.assertEquals(Error.INVALID_TIME_ORDER.getErrorCode(), response.getErrorCode());
+        Assert.assertEquals(Error.INVALID_TIME_ORDER.getErrorMessage(), response.getErrorMessage());
     }
 
     // TODO: This feature is shut off for now
@@ -175,17 +191,20 @@ public class TestRateController extends JerseyTest {
         Assert.assertEquals(2000, response.getRate());
     }
 
-    // TODO: This feature is not yet implemented
-//    @Test(expected = InvalidJSONException.class)
-//    public void testPostInvalidJson(){
-//        RateResponse response = target("/rate").request().post(Entity.entity(new RateRequest("2019-07-15T09:00:00Z", "2019-07-15T21:00:00Z"), MediaType.APPLICATION_JSON), RateResponse.class);
-//        // auto assert, expected exception thrown
-//    }
-
-    @Test(expected = RequiredAttributeException.class)
-    public void testRequiredAttributes(){
-        RateResponse response = target("/rate").request().post(Entity.entity(new RateRequest("", "2019-07-15T21:00:00Z"), MediaType.APPLICATION_JSON), RateResponse.class);
+    @Test(expected = BadRequestException.class)
+    public void testPostInvalidJson(){
+        target("/rate").request().post(Entity.entity("INVALID", MediaType.APPLICATION_JSON), ServerErrorResponse.class);
         // auto assert, expected exception thrown
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void testRequiredAttributes(){
+        ServerErrorResponse response = target("/rate").request().post(Entity.entity(new RateRequest("", "2019-07-15T21:00:00Z"), MediaType.APPLICATION_JSON), ServerErrorResponse.class);
+        Assert.assertNotNull(response.getTimestamp());
+        Assert.assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatusCode());
+        Assert.assertEquals(Status.BAD_REQUEST.getStatusMessage(), response.getStatusMessage());
+        Assert.assertEquals(Error.INVALID_REQUIRED.getErrorCode(), response.getErrorCode());
+        Assert.assertEquals(Error.INVALID_REQUIRED.getErrorMessage(), response.getErrorMessage());
     }
 
 }
