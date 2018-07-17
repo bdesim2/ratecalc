@@ -47,7 +47,7 @@ public enum Day {
     public static String convertToFullDay(String abbreviation){
         for (Day day : Day.values()){
             if (day.getDay().equalsIgnoreCase(abbreviation)){
-                return day.getDay();
+                return day.getFullDay();
             }
         }
         throw new NotFoundException("Could not find a day of the week for: " + abbreviation);
