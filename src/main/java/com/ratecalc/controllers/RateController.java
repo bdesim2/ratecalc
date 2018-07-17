@@ -48,7 +48,7 @@ public class RateController {
      * This is needed for metrics... start up all the counters and keep track of response times
      */
     public RateController(){
-        LOGGER.info("Starting up the metrics for rate controller.");
+        LOGGER.info("Metrics Init: Starting timer for response time.");
         MetricRegistry metricRegistry = MetricsService.getMetricRegistry();
         req = metricRegistry.meter("requests");
         resp = metricRegistry.timer(MetricRegistry.name(RateController.class, "responses"));
