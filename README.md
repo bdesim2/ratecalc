@@ -52,6 +52,5 @@ gradle war
 ## AWS Deployment: ##
 
 ## Known Issues: ##
-- Unknown app restart at random intervals. Does not have an effect on the user. Will be fixed in the next release.
 - The application does not take into account anything but on the hour parking rates... This was bad design on my part..
 should have caught this one sooner and developed the models to understand something more resilient like LocalTime for all time stamps.
