@@ -37,8 +37,8 @@ public class RateService {
         checkFormat(startTime);
         checkFormat(endTime);
         // Make sure that the end time is after the start time.. and the start time and end time are not in the past or anything funky like that
-        validateDateTimeNotInPast(startTime);
-        validateDateTimeNotInPast(endTime);
+//        validateDateTimeNotInPast(startTime);
+//        validateDateTimeNotInPast(endTime);
         validateEndTimeAfterStartTime(startTime, endTime);
         // find our actual rate now that we know our input is valid
         return findParkingRate(startTime, endTime);
