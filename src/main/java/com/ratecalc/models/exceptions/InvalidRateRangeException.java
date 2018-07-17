@@ -16,7 +16,7 @@ public class InvalidRateRangeException extends ServerException {
                 Status.BAD_REQUEST.getStatusCode(),
                 Status.BAD_REQUEST.getStatusMessage(),
                 Error.INVALID_RATE_TIME.getErrorCode(),
-                Error.INVALID_RATE_TIME.getErrorMessage() + " Value: " + dateTime
+                Error.INVALID_RATE_TIME.getErrorMessage() + " Invalid value: " + dateTime
         );
     }
 
