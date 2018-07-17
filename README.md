@@ -7,7 +7,7 @@ This application is a REST API that will calculate parking rates given a specifi
 - Java
 - Jersey
 - Jackson XML and JSON
-- Drop Wizard Metrics (Time permitting)
+- Drop Wizard Metrics (Response Time metrics for all 'Rate' APIs)
 - Jetty
 - Gradle
 - Docker (Deployment to AWS time permitting)
@@ -48,10 +48,15 @@ gradle war
 ```
 
 ## Metrics: ##
+Metrics are currently taken using the DropWizard Metrics library. These results are returning the default responses from the MetricsRegistry responses.
+
+#### API ####
+GET /metrics/responseTimes
 
 ## AWS Deployment: ##
+For now you can deploy the .WAR file to an AMI in EC2. Coming in later versions would be a dockerized version of this application
+We would need to create a dockerFile, a docker-compose.yaml, and publish this to some place that we can upload to AWS via the docker repository (hub)
 
 ## Known Issues: ##
-- Unknown app restart at random intervals. Does not have an effect on the user. Will be fixed in the next release.
 - The application does not take into account anything but on the hour parking rates... This was bad design on my part..
 should have caught this one sooner and developed the models to understand something more resilient like LocalTime for all time stamps.
