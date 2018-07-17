@@ -15,6 +15,10 @@ war {
     destinationDir = new File("${rootDir}/deployment/")
 }
 
+clean {
+    delete "${rootDir}/deployment/"
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
