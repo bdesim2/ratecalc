@@ -15,6 +15,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+// TODO: This needs cleanup!!! need to make the responses look a lot cleaner so we can make sense of the data
+// TODO: Currently it returns the generic "MetricRegistry" response
+
 /**
  * This class is a metrics controller for all /metrics endpoints
  * - GET /metrics/responseTime
