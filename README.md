@@ -48,6 +48,10 @@ gradle war
 ```
 
 ## Metrics: ##
+Metrics are currently taken using the DropWizard Metrics library. These results are returning the default responses from the MetricsRegistry responses.
+
+#### API ####
+GET /metrics/responseTimes
 
 ## AWS Deployment: ##
 
