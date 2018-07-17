@@ -40,15 +40,14 @@ public class ParkingRate {
      * Method to check two ISO times to see if they are represented in the parking rate
      */
     public boolean containsTimes(LocalDateTime begin, LocalDateTime end){
-//        int startHour = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("Hmm")).getHour();
-//        int endHour = LocalTime.parse(endTime, DateTimeFormatter.ofPattern("Hmm")).getHour();
-//        if (startHour <= begin.getHour() && endHour >= end.getHour()){
-//            return true;
-//        }
-//        else {
-//            return false;
-//        }
-        return true;
+        int startHour = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("Hmm")).getHour();
+        int endHour = LocalTime.parse(endTime, DateTimeFormatter.ofPattern("Hmm")).getHour();
+        if (startHour <= begin.getHour() && endHour >= end.getHour()){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public String getStartTime() {
