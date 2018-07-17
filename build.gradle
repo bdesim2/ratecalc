@@ -12,7 +12,7 @@ gretty {
 
 war {
     archiveName = "ROOT.war"
-    destinationDir = new File("${rootDir}/target/")
+    destinationDir = new File("${rootDir}/deployment/")
 }
 
 tasks.withType(JavaCompile) {
