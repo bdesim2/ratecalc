@@ -1,5 +1,8 @@
 package com.ratecalc.controllers;
 
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.ratecalc.config.RateConfig;
 import com.ratecalc.constants.Status;
 import com.ratecalc.core.Common;
@@ -8,6 +11,7 @@ import com.ratecalc.models.request.RateRequest;
 import com.ratecalc.models.response.RateResponse;
 import com.ratecalc.models.response.RatesResponse;
 import com.ratecalc.models.exceptions.ServerErrorResponse;
+import com.ratecalc.services.MetricsService;
 import com.ratecalc.services.RateService;
 import io.swagger.annotations.*;
 import org.apache.http.HttpStatus;
@@ -36,6 +40,19 @@ public class RateController {
     private static final Logger LOGGER = LogManager.getLogger(RateController.class);
     private static final Common common = new Common();
     private final transient RateService rateService = new RateService();
+    private final transient Meter req;
+    private final transient Timer resp;
+
+    /**
+     * Constructor for our rate controller
+     * This is needed for metrics... start up all the counters and keep track of response times
+     */
+    public RateController(){
+        LOGGER.info("Starting up the metrics for rate controller.");
+        MetricRegistry metricRegistry = MetricsService.getMetricRegistry();
+        req = metricRegistry.meter("requests");
+        resp = metricRegistry.timer(MetricRegistry.name(RateController.class, "responses"));
+    }
 
     /**
      * This method will calculate and return a given rate based on a start and end ISO date/time
@@ -59,18 +76,25 @@ public class RateController {
             @PathParam(value = "endRate")
             final String endRate
     ) throws ServerException {
+        req.mark();
+        Timer.Context timer = resp.time();
         LOGGER.info("Request received for GET /rate/{startRate}/{endRate}");
         LOGGER.info("Calculating rate based on range: " + startRate + " - " + endRate);
         // Calculate the rate (the real work)
-        int rate = rateService.calculateRate(startRate, endRate);
-        return Response
-                .status(Response.Status.OK)
-                .entity(new RateResponse(
-                        Status.SUCCESS.getStatusCode(),
-                        Status.SUCCESS.getStatusMessage(),
-                        rate
-                ))
-                .build();
+        try {
+            int rate = rateService.calculateRate(startRate, endRate);
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(new RateResponse(
+                            Status.SUCCESS.getStatusCode(),
+                            Status.SUCCESS.getStatusMessage(),
+                            rate
+                    ))
+                    .build();
+        }
+        finally {
+            timer.stop();
+        }
     }
 
     /**
@@ -94,21 +118,28 @@ public class RateController {
             @Valid
             RateRequest rateRequest
     ) throws ServerException {
+        req.mark();
+        Timer.Context timer = resp.time();
         LOGGER.info("Request received for POST /rate");
         LOGGER.info("Reading in the request body to find a parking rate.");
         common.logObject(rateRequest);
         // Calculate the rate (the real work)
-        rateService.checkRequiredFields(rateRequest);
-        // TODO: Check to make sure the input payload is valid XML or JSON
-        int rate = rateService.calculateRate(rateRequest.getStartRate(), rateRequest.getEndRate());
-        return Response
-                .status(Response.Status.OK)
-                .entity(new RateResponse(
-                        Status.SUCCESS.getStatusCode(),
-                        Status.SUCCESS.getStatusMessage(),
-                        rate
-                ))
-                .build();
+        try {
+            rateService.checkRequiredFields(rateRequest);
+            // TODO: Check to make sure the input payload is valid XML or JSON
+            int rate = rateService.calculateRate(rateRequest.getStartRate(), rateRequest.getEndRate());
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(new RateResponse(
+                            Status.SUCCESS.getStatusCode(),
+                            Status.SUCCESS.getStatusMessage(),
+                            rate
+                    ))
+                    .build();
+        }
+        finally {
+            timer.stop();
+        }
     }
 
     @ApiOperation(value = "Get All Available Rates", nickname = "get all rates")
@@ -120,14 +151,21 @@ public class RateController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServerErrorResponse.class)
     })
     public Response getAllRates() {
+        req.mark();
+        Timer.Context timer = resp.time();
         LOGGER.info("Request received for GET /rates");
-        return Response
-                .status(Response.Status.OK)
-                .entity(new RatesResponse(
-                        Status.SUCCESS.getStatusCode(),
-                        Status.SUCCESS.getStatusMessage(),
-                        RateConfig.getInstance().getParkingRates()
-                ))
-                .build();
+        try {
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(new RatesResponse(
+                            Status.SUCCESS.getStatusCode(),
+                            Status.SUCCESS.getStatusMessage(),
+                            RateConfig.getInstance().getParkingRates()
+                    ))
+                    .build();
+        }
+        finally {
+            timer.stop();
+        }
     }
 }
