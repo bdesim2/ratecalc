@@ -98,6 +98,8 @@ public class RateController {
         LOGGER.info("Reading in the request body to find a parking rate.");
         common.logObject(rateRequest);
         // Calculate the rate (the real work)
+        rateService.checkRequiredFields(rateRequest);
+        // TODO: Check to make sure the input payload is valid XML or JSON
         int rate = rateService.calculateRate(rateRequest.getStartRate(), rateRequest.getEndRate());
         return Response
                 .status(Response.Status.OK)

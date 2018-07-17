@@ -4,13 +4,11 @@ import com.ratecalc.config.RateConfig;
 import com.ratecalc.constants.Day;
 import com.ratecalc.models.exceptions.*;
 import com.ratecalc.models.rate.ParkingRate;
-import com.ratecalc.models.rate.Rate;
+import com.ratecalc.models.request.RateRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
@@ -36,12 +34,12 @@ public class RateService {
      */
     public int calculateRate(String startTime, String endTime) throws ServerException {
         // check start and end time are in ISO format
-//        checkFormat(startTime);
-//        checkFormat(endTime);
+        checkFormat(startTime);
+        checkFormat(endTime);
         // Make sure that the end time is after the start time.. and the start time and end time are not in the past or anything funky like that
-//        validateDateTimeNotInPast(startTime);
-//        validateDateTimeNotInPast(endTime);
-//        validateEndTimeAfterStartTime(startTime, endTime);
+        validateDateTimeNotInPast(startTime);
+        validateDateTimeNotInPast(endTime);
+        validateEndTimeAfterStartTime(startTime, endTime);
         // find our actual rate now that we know our input is valid
         return findParkingRate(startTime, endTime);
     }
@@ -85,6 +83,21 @@ public class RateService {
         LocalDateTime time = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME);
         if (time.isBefore(LocalDateTime.now())){
             throw new TimeInPastException(time.toString());
+        }
+    }
+
+    /**
+     * Method to check attribute sin the RateRequest object to make sure they are not null or empty strings
+     * @param rateRequest request body
+     * @throws RequiredAttributeException - thrown if the attributes are null or empty strings
+     */
+    public void checkRequiredFields(RateRequest rateRequest) throws RequiredAttributeException{
+        // TODO: Handle the exception smarter so we show the user the attribute that is missing or null
+        if (rateRequest.getStartRate().isEmpty() || rateRequest.getStartRate() == null || rateRequest.getStartRate().equalsIgnoreCase("")){
+            throw new RequiredAttributeException();
+        }
+        else if (rateRequest.getEndRate().isEmpty() || rateRequest.getEndRate() == null || rateRequest.getEndRate().equalsIgnoreCase("")){
+            throw new RequiredAttributeException();
         }
     }
 
