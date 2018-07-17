@@ -2,10 +2,12 @@ package com.ratecalc.exception;
 
 import com.ratecalc.constants.Error;
 import com.ratecalc.constants.Status;
-import com.ratecalc.models.response.ServiceResponse;
+import com.ratecalc.models.exceptions.ServerException;
+import com.ratecalc.models.exceptions.ServerErrorResponse;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -24,15 +26,26 @@ public class InternalServerExceptionMapper implements ExceptionMapper<Exception>
 
     @Override
     public Response toResponse(Exception ex){
-        final ServiceResponse error = new ServiceResponse();
-        error.setTimestamp(System.currentTimeMillis());
-        error.setStatusCode(Status.BAD_REQUEST.getStatusCode());
-        error.setStatusMessage(Status.BAD_REQUEST.getStatusMessage());
-        error.setErrorCode(Error.INTERNAL_SERVER_ERROR.getErrorCode());
-        error.setErrorMessage(Error.INTERNAL_SERVER_ERROR.getErrorMessage() + " " + ex.getMessage());
-        LOGGER.info("Handling Bad Request from missing or required attribute.");
-        LOGGER.info(ex.getMessage());
-        return Response.status(Response.Status.OK).entity(error).build();
+        ServerException serverException;
+        // Make sure we handle all instances of Application exception.. not just our base exception
+        if (ex instanceof ServerException){
+            serverException = (ServerException)ex;
+        }
+        // return the generic default internal server error if we get this far
+        else {
+            serverException = new ServerException(
+                    Status.INTERNAL_SERVER_ERROR.getStatusCode(),
+                    Status.INTERNAL_SERVER_ERROR.getStatusMessage(),
+                    Error.INTERNAL_SERVER_ERROR.getErrorCode(),
+                    Error.INTERNAL_SERVER_ERROR.getErrorMessage()
+            );
+        }
+        LOGGER.info(serverException.getErrorMessage());
+        return Response
+                .status(serverException.getStatusCode())
+                .entity(new ServerErrorResponse(serverException))
+                .type(MediaType.APPLICATION_JSON)
+                .build();
     }
 
 }

@@ -3,10 +3,11 @@ package com.ratecalc.controllers;
 import com.ratecalc.config.RateConfig;
 import com.ratecalc.constants.Status;
 import com.ratecalc.core.Common;
+import com.ratecalc.models.exceptions.ServerException;
 import com.ratecalc.models.request.RateRequest;
 import com.ratecalc.models.response.RateResponse;
 import com.ratecalc.models.response.RatesResponse;
-import com.ratecalc.models.response.ServiceResponse;
+import com.ratecalc.models.exceptions.ServerErrorResponse;
 import com.ratecalc.services.RateService;
 import io.swagger.annotations.*;
 import org.apache.http.HttpStatus;
@@ -48,16 +49,16 @@ public class RateController {
     @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RateResponse.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Bad Request", response = ServiceResponse.class),
-            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
-            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Bad Request", response = ServerErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServerErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServerErrorResponse.class)
     })
     public Response getRate(
             @PathParam(value = "startRate")
             final String startRate,
             @PathParam(value = "endRate")
             final String endRate
-    ){
+    ) throws ServerException {
         LOGGER.info("Request received for GET /rate/{startRate}/{endRate}");
         LOGGER.info("Calculating rate based on range: " + startRate + " - " + endRate);
         // Calculate the rate (the real work)
@@ -84,19 +85,21 @@ public class RateController {
     @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RateResponse.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Bad Request", response = ServiceResponse.class),
-            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServiceResponse.class),
-            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Bad Request", response = ServerErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Not Found", response = ServerErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServerErrorResponse.class)
     })
     public Response postRate(
             @ApiParam(name = "body", value = "The rate range to request", required = true)
             @Valid
             RateRequest rateRequest
-    ){
+    ) throws ServerException {
         LOGGER.info("Request received for POST /rate");
         LOGGER.info("Reading in the request body to find a parking rate.");
         common.logObject(rateRequest);
         // Calculate the rate (the real work)
+        rateService.checkRequiredFields(rateRequest);
+        // TODO: Check to make sure the input payload is valid XML or JSON
         int rate = rateService.calculateRate(rateRequest.getStartRate(), rateRequest.getEndRate());
         return Response
                 .status(Response.Status.OK)
@@ -114,9 +117,9 @@ public class RateController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Success", response = RatesResponse.class),
-            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServiceResponse.class)
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "Server Error", response = ServerErrorResponse.class)
     })
-    public Response getAllRates() throws Exception {
+    public Response getAllRates() {
         LOGGER.info("Request received for GET /rates");
         return Response
                 .status(Response.Status.OK)

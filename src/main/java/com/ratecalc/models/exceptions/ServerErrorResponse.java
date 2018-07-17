@@ -1,4 +1,4 @@
-package com.ratecalc.models.response;
+package com.ratecalc.models.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,8 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * This class represents the rate response object that is returned for the
- * GET and POST response on the /rate controllers
+ * This class is a pojo for the server error responses
  *
  * @Author Brian DeSimone
  * @Date 07/14/2018
@@ -21,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RateResponse {
+public class ServerErrorResponse {
 
     @XmlElement
     @JsonProperty
@@ -41,17 +40,31 @@ public class RateResponse {
     @XmlElement
     @JsonProperty
     @ApiModelProperty(required = true)
-    private int rate;
+    private int errorCode;
 
-    public RateResponse(){
+    @XmlElement
+    @JsonProperty
+    @ApiModelProperty(required = true)
+    private String errorMessage;
+
+    public ServerErrorResponse() {
 
     }
 
-    public RateResponse(int statusCode, String statusMessage, int rate){
+    public ServerErrorResponse(ServerException exception){
+        this.timestamp = System.currentTimeMillis();
+        this.statusCode = exception.getStatusCode();
+        this.statusMessage = exception.getStatusMessage();
+        this.errorCode = exception.getErrorCode();
+        this.errorMessage = exception.getErrorMessage();
+    }
+
+    public ServerErrorResponse(int statusCode, String statusMessage, int errorCode, String errorMessage) {
         this.timestamp = System.currentTimeMillis();
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
-        this.rate = rate;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
     }
 
     public Long getTimestamp() {
@@ -78,11 +91,19 @@ public class RateResponse {
         this.statusMessage = statusMessage;
     }
 
-    public int getRate() {
-        return rate;
+    public int getErrorCode() {
+        return errorCode;
     }
 
-    public void setRate(int rate) {
-        this.rate = rate;
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

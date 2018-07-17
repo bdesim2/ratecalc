@@ -1,7 +1,6 @@
 package com.ratecalc.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ratecalc.constants.Day;
 import com.ratecalc.core.Common;
 import com.ratecalc.models.rate.ParkingRate;
 import com.ratecalc.models.rate.Rate;

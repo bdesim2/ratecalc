@@ -11,7 +11,10 @@ public enum Error {
     INTERNAL_SERVER_ERROR(1001, "Failed to process the request."),
     INVALID_JSON(1002, "The JSON body is invalid in the request."),
     INVALID_REQUIRED(1003, "One or more request attributes is missing, invalid, or not following constraints."),
-    NO_DATA_FOUND(1004, "No data was found.");
+    INVALID_RATE_TIME(1004, "startRate and endRate must be in ISO DateTime format and is a required field."),
+    INVALID_TIME_ORDER(1005, "The \"endRate\" is sooner than the \"startRate\""),
+    PAST_START_TIME(1006, "The \"startRate\" or \"endRate\" ISO time was in the past. Each time must be greater than present time."),
+    NO_RATE_FOUND(1007, "We could not find a rate for the given startRate - endRate");
 
     /**
      * Variable that holds the error code

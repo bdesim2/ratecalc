@@ -2,6 +2,7 @@ package com.ratecalc;
 
 import com.ratecalc.controllers.IsAliveController;
 import com.ratecalc.controllers.RateController;
+import com.ratecalc.exception.InternalServerExceptionMapper;
 import io.swagger.annotations.Contact;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
@@ -67,6 +68,7 @@ public class RateCalcApplication extends Application {
         // add our endpoints
         classes.add(RateController.class);
         classes.add(IsAliveController.class);
+        classes.add(InternalServerExceptionMapper.class);
         // enable swagger
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
