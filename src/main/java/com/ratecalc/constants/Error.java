@@ -13,7 +13,8 @@ public enum Error {
     INVALID_REQUIRED(1003, "One or more request attributes is missing, invalid, or not following constraints."),
     INVALID_RATE_TIME(1004, "startRate and endRate must be in ISO DateTime format and is a required field."),
     INVALID_TIME_ORDER(1005, "The \"endRate\" is sooner than the \"startRate\""),
-    NO_RATE_FOUND(1006, "We could not find a rate for the given startRate - endRate");
+    PAST_START_TIME(1006, "The \"startRate\" or \"endRate\" ISO time was in the past. Each time must be greater than present time."),
+    NO_RATE_FOUND(1007, "We could not find a rate for the given startRate - endRate");
 
     /**
      * Variable that holds the error code
