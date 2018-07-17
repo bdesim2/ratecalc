@@ -2,16 +2,18 @@ package com.ratecalc.services;
 
 import com.ratecalc.config.RateConfig;
 import com.ratecalc.constants.Day;
-import com.ratecalc.models.exceptions.InvalidRateRangeException;
-import com.ratecalc.models.exceptions.InvalidTimeOrderException;
-import com.ratecalc.models.exceptions.ServerException;
-import com.ratecalc.models.exceptions.TimeInPastException;
+import com.ratecalc.models.exceptions.*;
+import com.ratecalc.models.rate.ParkingRate;
+import com.ratecalc.models.rate.Rate;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 /**
  * This service holds all operations for calculating rates.
@@ -42,8 +44,6 @@ public class RateService {
 //        validateEndTimeAfterStartTime(startTime, endTime);
         // find our actual rate now that we know our input is valid
         return findParkingRate(startTime, endTime);
-        // stub this for now
-//        return 100;
     }
 
     /**
@@ -91,16 +91,34 @@ public class RateService {
     /**
      * THIS IS WHAT ACTUALLY CALCULATES THE RATE!!!!!!!!
      * If we get here that means we got past all of the exceptions and we are ready to calculate the rate if it exists
-     * @param startTime user start time input
-     * @param endTime user end time input
+     * @param startDateTime user start time input
+     * @param endDateTime user end time input
      * @return integer value of the rate
      */
-    private int findParkingRate(String startTime, String endTime){
-        LocalDateTime begin = LocalDateTime.parse(startTime, DateTimeFormatter.ISO_DATE_TIME);
-        LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ISO_DATE_TIME);
-        int dayOfWeek = begin.getDayOfWeek().getValue();
-        LOGGER.info("Testing day of week: " + Day.convertValueToAbbreviation(dayOfWeek));
-        return 100;
+    private int findParkingRate(String startDateTime, String endDateTime) throws RateNotFoundException {
+        LocalDateTime begin = LocalDateTime.parse(startDateTime, DateTimeFormatter.ISO_DATE_TIME);
+        LocalDateTime end = LocalDateTime.parse(endDateTime, DateTimeFormatter.ISO_DATE_TIME);
+        String dayOfWeek = Day.convertValueToAbbreviation(begin.getDayOfWeek().getValue());
+        LOGGER.info("Searching parking rates for DAY: " + dayOfWeek + " START: " + begin.toString() + " END: " + end.toString());
+        // Go through the parking rates for a given day and use lambda to filter out any times that fall in our range
+        final Optional<ParkingRate> matchingRate = rateConfig
+                .getParkingRates()
+                .get(dayOfWeek)
+                .stream()
+                .filter(rate -> rate.containsTimes(begin, end))
+                .findFirst();
+        if (matchingRate.isPresent()){
+            LOGGER.info("We found a parking rate! " +
+                    matchingRate.get().getStartTime() +
+                    " - " +
+                    matchingRate.get().getEndTime() +
+                    " Price: " +
+                    matchingRate.get().getPrice());
+            return matchingRate.get().getPrice();
+        }
+        else {
+            throw new RateNotFoundException();
+        }
     }
 
 }
